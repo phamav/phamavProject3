@@ -39,44 +39,14 @@ protected:
 
 		// Add the main (front) camera
 		auto mainCamObj = std::make_shared<GameObject>();
-		mainCamComp = std::make_shared<CameraComponent>(0); // depth 0
+		mainCamComp = std::make_shared<CameraComponent>(); // depth 0
 		addChildGameObject(mainCamObj);
 
-		mainCamObj->setPosition(vec3(0.0f, 500.0f, 0.0f));
+		mainCamObj->setPosition(vec3(0.0f, 400.0f, 0.0f));
 		mainCamObj->rotateTo(vec3(0.0f, -1.0f, 0.0f));
 		mainCamComp->setViewPort(0.0f, 0.5f, 1.0f, 0.5f);
 		mainCamObj->addComponent(std::make_shared<ArrowRotateComponent>());
 		mainCamObj->addComponent(mainCamComp);
-
-		// Add a second camera
-		//auto secondCamObj = std::make_shared<GameObject>();
-		//secondCamComp = std::make_shared<CameraComponent>(1, 90.0f);
-		//addChildGameObject(secondCamObj);
-
-		//secondCamObj->setPosition(vec3(-15.0f, 0.0f, 20.0f));
-		//secondCamObj->rotateTo(ZERO_V3 - vec3(-15.0f, 0.0f, 20.0f));
-		//secondCamObj->setPosition(vec3(-15.0f, 0.0f, 20.0f));
-
-		//secondCamComp->setViewPort(0.6f, 0.6f, 0.4f, 0.4f);
-		//secondCamObj->addComponent(secondCamComp);
-
-		//// ***** Sound Setup *****
-
-		// Create a new GameObject for sound source
-		auto soundOne = std::make_shared<GameObject>();
-		addChildGameObject(soundOne);
-		soundOne->setPosition(vec3(0.0f, 0.0f, 0.0f));
-
-		// Create a SoundSourceComponent and attach it to soundObject
-		auto soundSourceComp = std::make_shared<SoundSourceComponent>("Assets/iamtheprotectorofthissystem.wav", 1.0f, 5.0f, 100.0f);
-		soundOne->addComponent(soundSourceComp);
-
-		// Set properties for the sound source
-		soundSourceComp->setLooping(true);
-		soundSourceComp->setGain(1.0f); // full volume
-
-		// Start playing the sound
-		soundSourceComp->play();
 
 		//// ***** SIMULATION ******
 
@@ -158,6 +128,73 @@ protected:
 		jupiterGameObject->setPosition(vec3(-100.0f, 0.0f, 0.0f));
 		jupiterGameObject->addComponent(std::make_shared<SpinComponent>(UNIT_Y_V3, 5.0f)); // Jupiter's spin
 
+
+		// ***** Spaceship *****
+		auto spaceshipObj = std::make_shared<GameObject>();
+		addChildGameObject(spaceshipObj);
+		std::shared_ptr<ModelMeshComponent> spaceshipMesh = std::make_shared<ModelMeshComponent>("Assets/jet_models/F-15C_Eagle.obj", shaderProgram);
+		spaceshipObj->addComponent(spaceshipMesh);
+		spaceshipObj->setPosition(vec3(-50.0f, 0.0f, 0.0f));
+		spaceshipObj->setScale(vec3(1.0f, 1.0f, 1.0f));
+
+		std::vector<std::shared_ptr<GameObject>> waypoints = { sunGameObject, earthGameObject, jupiterGameObject };
+		auto spaceshipJourney = std::make_shared<JourneyComponent>(waypoints, vec3(0.0f, 0.0f, 10.0f));
+		spaceshipObj->addComponent(spaceshipJourney);
+
+		// Add the spotlight to the spaceship
+		auto lightObj = std::make_shared<GameObject>();
+		spaceshipObj->addChildGameObject(lightObj);
+		addChildGameObject(lightObj);
+		auto spotlight = std::make_shared<SpotLightComponent>(GLFW_KEY_L);
+		spotlight->setSpotExponent(300.0f);
+		lightObj->addComponent(spotlight);
+
+		// Add a second camera follows behind the spaceship
+		auto secondCamObj = std::make_shared<GameObject>();
+		spaceshipObj->addChildGameObject(secondCamObj);
+		secondCamComp = std::make_shared<CameraComponent>();
+		addChildGameObject(secondCamObj);
+		secondCamObj->setPosition(vec3(0.0f, 0.0f, 50.0f));
+		secondCamComp->setViewPort(0.0f, 0.0f, 1.0f, 0.5f);
+		secondCamObj->addComponent(secondCamComp);
+
+		// Add sound listener to spaceship
+		auto listener = std::make_shared<SoundListenerComponent>();
+		spaceshipObj->addComponent(listener);
+
+		// ***** Sound Setup *****
+
+		// Sun Sound
+		auto sunSoundComp = std::make_shared<SoundSourceComponent>("Assets/nasa_sun.wav");
+		sunGameObject->addComponent(sunSoundComp);
+		sunSoundComp->setLooping(true);
+		sunSoundComp->setGain(0.5f);
+		sunSoundComp->setRollOffFactor(30.0f);
+		sunSoundComp->play();
+
+		// Earth Sound
+		auto earthSoundComp = std::make_shared<SoundSourceComponent>("Assets/earth_tsunami.wav");
+		earthGameObject->addComponent(earthSoundComp);
+		earthSoundComp->setLooping(true);
+		earthSoundComp->setGain(1.0f);
+		earthSoundComp->setRollOffFactor(15.0f);
+		earthSoundComp->play();
+
+		// Moon Sound
+		auto moonSoundComp = std::make_shared<SoundSourceComponent>("Assets/moon_landing.wav");
+		moonGameObject->addComponent(moonSoundComp);
+		moonSoundComp->setLooping(true);
+		moonSoundComp->setGain(1.0f);
+		moonSoundComp->setRollOffFactor(10.0f);
+		moonSoundComp->play();
+
+		// Jupiter Sound
+		auto jupiterSoundComp = std::make_shared<SoundSourceComponent>("Assets/nasa_jupiter.wav");
+		jupiterGameObject->addComponent(jupiterSoundComp);
+		jupiterSoundComp->setLooping(true);
+		jupiterSoundComp->setGain(1.0f);
+		jupiterSoundComp->setRollOffFactor(20.0f);
+		jupiterSoundComp->play();
 
 	} // end loadScene
 

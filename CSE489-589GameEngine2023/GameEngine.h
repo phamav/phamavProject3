@@ -37,6 +37,12 @@
 
 // Physics
 #include "SpinComponent.h"
+#include "PhysicsEngine.h"
+#include "SteeringComponent.h"
+#include "WaypointComponent.h"
+#include "JourneyComponent.h"
+#include "CollisionComponent.h"
+#include "RigidBodyComponent.h"
 
 // Sound
 #include "SoundEngine.h"

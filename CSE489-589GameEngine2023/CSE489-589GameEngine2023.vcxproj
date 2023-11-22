@@ -136,6 +136,7 @@
     <ClCompile Include="DirectionalLightComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="JourneyComponent.cpp" />
     <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathLibsConstsFuncs.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="JourneyComponent.h" />
     <ClInclude Include="LightComponent.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathLibsConstsFuncs.h" />
