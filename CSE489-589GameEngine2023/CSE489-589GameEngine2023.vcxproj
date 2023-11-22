@@ -205,6 +205,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\BRICK.BMP" />
+    <Image Include="Textures\Gaseous1.png" />
+    <Image Include="Textures\moon.jpg" />
+    <Image Include="Textures\sun.jfif" />
+    <Image Include="Textures\Terrestrial1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
